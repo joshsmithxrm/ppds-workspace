@@ -1,0 +1,13 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.idea/
+*.swp
+*.swo
+
+# Local overrides
+*.local.md
+nul
+.claude/settings.local.json

@@ -1,0 +1,65 @@
+{
+  "folders": [
+    {
+      "name": "🏠 Workspace",
+      "path": "."
+    },
+    {
+      "name": "📦 Extension",
+      "path": "extension"
+    },
+    {
+      "name": "🎯 Demo",
+      "path": "demo"
+    },
+    {
+      "name": "📚 SDK",
+      "path": "sdk"
+    },
+    {
+      "name": "🛠️ Tools",
+      "path": "tools"
+    },
+    {
+      "name": "🚀 ALM",
+      "path": "alm"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/bin": true,
+      "**/obj": true,
+      "**/.git": true,
+      "extension-plugin-registration": true,
+      "extension-solution-diff": true,
+      "extension-deployment-settings": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bin": true,
+      "**/obj": true,
+      "**/dist": true,
+      "**/coverage": true,
+      "**/*.vsix": true
+    },
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/bin/**": true,
+      "**/obj/**": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.powershell",
+      "ms-dotnettools.csharp",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [],
+    "compounds": []
+  }
+}
