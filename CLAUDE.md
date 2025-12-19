@@ -4,13 +4,13 @@
 
 ---
 
-## What This Is
+## 📋 What This Is
 
 Parent workspace for the PPDS ecosystem. Each subfolder is an independent git repository. This folder itself is NOT a git repo - it's a local workspace for coordinating cross-project work.
 
 ---
 
-## Repositories
+## 📦 Repositories
 
 | Folder | Repository | Purpose |
 |--------|------------|---------|
@@ -30,7 +30,7 @@ Parent workspace for the PPDS ecosystem. Each subfolder is an independent git re
 
 ---
 
-## When to Work From This Folder
+## 🎯 When to Work From This Folder
 
 Use the parent workspace (`C:\VS\ppds\`) for:
 - Cross-project migrations or refactors
@@ -39,7 +39,7 @@ Use the parent workspace (`C:\VS\ppds\`) for:
 - Ecosystem-wide documentation updates
 - Tasks that span multiple repositories
 
-## When to Work From Child Folders
+## 📁 When to Work From Child Folders
 
 Use individual project folders for:
 - Any work scoped to a single project
@@ -51,20 +51,48 @@ Use individual project folders for:
 
 ---
 
-## Cross-Project Conventions
+## 🚫 NEVER (Cross-Project)
 
-### Naming
-- **NuGet packages:** `PPDS.*` (e.g., `PPDS.Plugins`, `PPDS.Plugins.Abstractions`)
-- **PowerShell module:** `PPDS.Tools`
-- **PowerShell cmdlets:** `Verb-Dataverse<Noun>` (e.g., `Deploy-DataversePlugin`, `Get-DataverseAssembly`)
-- **GitHub repos:** lowercase with hyphens (`ppds-sdk`, `ppds-tools`)
+| Rule | Why |
+|------|-----|
+| Mix changes across repos in one commit | Each repo has independent history |
+| Push to main without PR | All repos use branch protection |
+| Skip CHANGELOG.md updates | Release notes are required |
+| Use inconsistent naming conventions | Ecosystem cohesion requires consistency |
 
-### Versioning
+---
+
+## ✅ ALWAYS (Cross-Project)
+
+| Rule | Why |
+|------|-----|
+| Use SCREAMING_SNAKE_CASE for doc files | Ecosystem-wide documentation standard |
+| Use emoji section headers in CLAUDE.md | Consistent AI-first formatting |
+| Use ✅/❌ patterns in examples | Clear good/bad distinction |
+| Update all affected repos together | Cross-cutting changes need coordination |
+
+---
+
+## 📛 Cross-Project Naming Conventions
+
+| Component | Convention | Example |
+|-----------|------------|---------|
+| NuGet packages | `PPDS.*` | `PPDS.Plugins`, `PPDS.Plugins.Abstractions` |
+| PowerShell module | `PPDS.Tools` | - |
+| PowerShell cmdlets | `Verb-Dataverse<Noun>` | `Deploy-DataversePlugin`, `Get-DataverseAssembly` |
+| GitHub repos | lowercase with hyphens | `ppds-sdk`, `ppds-tools` |
+| Documentation files | SCREAMING_SNAKE_CASE | `GETTING_STARTED.md`, `API_REFERENCE.md` |
+
+---
+
+## 📦 Versioning
+
 - All repos use SemVer
 - Major versions stay in sync across ecosystem for compatibility
 - Each repo has independent minor/patch versions
 
 ### Dependencies
+
 ```
 ppds-demo
 ├── references → ppds-sdk (NuGet)
@@ -77,21 +105,25 @@ extension
 
 ---
 
-## Common Cross-Project Tasks
+## 🚀 Coordinated Release Process
 
-### Coordinated Release
 When releasing a new major version across the ecosystem:
+
 1. Update and tag `ppds-sdk` first (NuGet must publish)
 2. Update and tag `ppds-tools` (PowerShell Gallery must publish)
 3. Tag `ppds-alm` (templates reference specific versions)
 4. Update `ppds-demo` to use new versions
 5. Update `extension` if needed
 
-### Version Compatibility Check
+---
+
+## 🛠️ Quick Commands
+
+### Check Version Compatibility
+
 ```powershell
 # Check all repos are on compatible versions
-cd C:\VS\ppds
-Get-ChildItem -Directory | ForEach-Object {
+Get-ChildItem C:\VS\ppds -Directory | ForEach-Object {
     if (Test-Path "$($_.FullName)\.git") {
         Write-Host "$($_.Name):" -ForegroundColor Cyan
         git -C $_.FullName describe --tags --always 2>$null
@@ -99,9 +131,33 @@ Get-ChildItem -Directory | ForEach-Object {
 }
 ```
 
+### Check Status of All Repos
+
+```powershell
+Get-ChildItem C:\VS\ppds -Directory | Where-Object { Test-Path "$($_.FullName)\.git" } | ForEach-Object {
+    Write-Host "`n$($_.Name):" -ForegroundColor Cyan
+    git -C $_.FullName status -sb
+}
+```
+
+### Pull All Repos
+
+```powershell
+Get-ChildItem C:\VS\ppds -Directory | Where-Object { Test-Path "$($_.FullName)\.git" } | ForEach-Object {
+    Write-Host "`n$($_.Name):" -ForegroundColor Cyan
+    git -C $_.FullName pull
+}
+```
+
+### Open Full Workspace in VS Code
+
+```powershell
+code C:\VS\ppds\ppds.code-workspace
+```
+
 ---
 
-## Folder Structure
+## 📁 Folder Structure
 
 ```
 ppds/
@@ -109,7 +165,8 @@ ppds/
 ├── README.md                    # Human-readable overview
 ├── ppds.code-workspace          # VS Code multi-root workspace
 ├── docs/
-│   └── AGENTIC-WORKFLOW.md      # Patterns for AI-assisted development
+│   ├── AGENTIC_WORKFLOW.md      # Patterns for AI-assisted development
+│   └── DOCUMENTATION_STYLE_GUIDE.md  # Documentation conventions
 ├── scripts/                     # Utility scripts
 │   ├── launch-workspace.ps1
 │   └── launch-features.ps1
@@ -124,32 +181,14 @@ ppds/
 
 ---
 
-## Quick Commands
+## 📚 Documentation References
 
-### Open Full Workspace in VS Code
-```powershell
-code C:\VS\ppds\ppds.code-workspace
-```
-
-### Check Status of All Repos
-```powershell
-Get-ChildItem C:\VS\ppds -Directory | Where-Object { Test-Path "$($_.FullName)\.git" } | ForEach-Object {
-    Write-Host "`n$($_.Name):" -ForegroundColor Cyan
-    git -C $_.FullName status -sb
-}
-```
-
-### Pull All Repos
-```powershell
-Get-ChildItem C:\VS\ppds -Directory | Where-Object { Test-Path "$($_.FullName)\.git" } | ForEach-Object {
-    Write-Host "`n$($_.Name):" -ForegroundColor Cyan
-    git -C $_.FullName pull
-}
-```
+- [AGENTIC_WORKFLOW.md](docs/AGENTIC_WORKFLOW.md) - Patterns for AI-assisted development
+- [DOCUMENTATION_STYLE_GUIDE.md](docs/DOCUMENTATION_STYLE_GUIDE.md) - Documentation conventions for all repos
 
 ---
 
-## Decision Presentation
+## ⚖️ Decision Presentation
 
 When presenting choices or asking questions:
 1. **Lead with your recommendation** and rationale
@@ -158,4 +197,3 @@ When presenting choices or asking questions:
 
 ❌ "What testing approach should we use?"
 ✅ "I recommend X because Y. Alternatives considered: A (rejected because B), C (rejected because D). Do you agree?"
-

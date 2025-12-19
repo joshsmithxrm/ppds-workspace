@@ -11,3 +11,21 @@ Thumbs.db
 *.local.md
 nul
 .claude/settings.local.json
+
+# Tmp folder
+tmp/
+nul
+
+# Child repositories (each is an independent git repo)
+extension/
+sdk/
+tools/
+alm/
+demo/
+
+# Git worktrees for any child repo (pattern: {repo}-{branch}/)
+extension-*/
+sdk-*/
+tools-*/
+alm-*/
+demo-*/
