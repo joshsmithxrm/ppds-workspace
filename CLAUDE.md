@@ -165,6 +165,8 @@ ppds/
 ├── README.md                    # Human-readable overview
 ├── ppds.code-workspace          # VS Code multi-root workspace
 ├── docs/
+│   ├── VERSIONING_POLICY.md     # Cross-repo versioning rules
+│   ├── RELEASE_COORDINATION.md  # Coordinated release playbooks
 │   ├── AGENTIC_WORKFLOW.md      # Patterns for AI-assisted development
 │   └── DOCUMENTATION_STYLE_GUIDE.md  # Documentation conventions
 ├── scripts/                     # Utility scripts
@@ -183,6 +185,8 @@ ppds/
 
 ## 📚 Documentation References
 
+- [VERSIONING_POLICY.md](docs/VERSIONING_POLICY.md) - Cross-repo versioning rules and compatibility
+- [RELEASE_COORDINATION.md](docs/RELEASE_COORDINATION.md) - Coordinated release playbooks
 - [AGENTIC_WORKFLOW.md](docs/AGENTIC_WORKFLOW.md) - Patterns for AI-assisted development
 - [DOCUMENTATION_STYLE_GUIDE.md](docs/DOCUMENTATION_STYLE_GUIDE.md) - Documentation conventions for all repos
 
