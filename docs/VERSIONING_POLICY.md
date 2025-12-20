@@ -49,17 +49,17 @@ ppds-demo (reference implementation)
 
 | Repo | Mechanism | Example |
 |------|-----------|---------|
-| sdk | Git tag suffix | `v1.2.0-alpha.1` |
-| tools | Manifest field | `Prerelease = 'alpha.1'` |
-| alm | Git tag suffix (optional) | `v1.1.0-beta.1` |
+| sdk | Git tag suffix | `v1.2.0-alpha1` |
+| tools | Manifest field | `Prerelease = 'alpha1'` |
+| alm | Git tag suffix (optional) | `v1.1.0-beta1` |
 
 ### Stages
 
 | Stage | Format | Purpose |
 |-------|--------|---------|
-| Alpha | `-alpha.N` | Early testing |
-| Beta | `-beta.N` | Feature complete |
-| RC | `-rc.N` | Release candidate |
+| Alpha | `-alphaN` | Early testing |
+| Beta | `-betaN` | Feature complete |
+| RC | `-rcN` | Release candidate |
 | Stable | (no suffix) | Production |
 
 ---
