@@ -6,7 +6,7 @@
 
 ## 📋 What This Is
 
-Parent workspace for the PPDS ecosystem. Each subfolder is an independent git repository. This folder itself is NOT a git repo - it's a local workspace for coordinating cross-project work.
+Parent workspace git repository for the PPDS ecosystem. This repo tracks workspace-level files (documentation, scripts, workspace config). Each subfolder is an independent nested git repository with its own history.
 
 ---
 
@@ -32,22 +32,33 @@ Parent workspace for the PPDS ecosystem. Each subfolder is an independent git re
 
 ## 🎯 When to Work From This Folder
 
-Use the parent workspace (`C:\VS\ppds\`) for:
-- Cross-project migrations or refactors
-- Coordinated releases across multiple repos
-- Debugging integration issues between projects
-- Ecosystem-wide documentation updates
-- Tasks that span multiple repositories
+Start your Claude Code session in `C:\VS\ppds\` when:
+- **Cross-repo features** - Work spans multiple repositories
+- **Ecosystem coordination** - Releases, migrations, refactors
+- **Cross-project exploration** - Understanding how pieces fit together
+- **Workspace documentation** - Updating docs/ in this repo
+
+**Design specs for cross-repo work live here** in `docs/` (version controlled).
 
 ## 📁 When to Work From Child Folders
 
-Use individual project folders for:
-- Any work scoped to a single project
-- Feature development, bug fixes, tests
-- Project-specific documentation
-- Normal development workflow
+Start your Claude Code session in the child folder (e.g., `sdk/`) when:
+- **Single-repo work** - Feature, bug fix, refactor in one project
+- **You need project-specific context** - Child CLAUDE.md has detailed patterns
+- **Git operations are for that repo** - Commits, branches, PRs
+
+**Design specs for single-repo work live in that repo.**
 
 **Each child project has its own detailed CLAUDE.md** with project-specific rules, commands, and patterns.
+
+### Quick Reference
+
+| Task | Start Session In | Spec Location |
+|------|------------------|---------------|
+| SDK feature | `sdk/` | `sdk/EXECUTION_SPEC.md` |
+| Extension bug fix | `extension/` | `extension/EXECUTION_SPEC.md` |
+| Cross-repo feature | `ppds/` | `ppds/docs/EXECUTION_SPEC.md` |
+| Ecosystem release | `ppds/` | `ppds/docs/EXECUTION_SPEC.md` |
 
 ---
 

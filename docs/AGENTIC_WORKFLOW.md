@@ -156,6 +156,38 @@ Benefits:
 
 ---
 
+## Session Location
+
+Where you start your Claude Code session determines your context.
+
+### When to Start in Parent Workspace
+
+Start in `ppds/` when:
+- Work spans multiple repositories
+- You need cross-project context
+- Exploring how components integrate
+- Updating ecosystem documentation
+
+### When to Start in Child Repo
+
+Start in the specific repo (e.g., `sdk/`) when:
+- All work is scoped to that project
+- You need project-specific CLAUDE.md context
+- Git operations are for that repo
+
+### The Rule
+
+**Start where your primary context needs to be.**
+
+| Task Type | Session Location | Why |
+|-----------|------------------|-----|
+| SDK feature | `sdk/` | SDK-specific patterns and commands |
+| Cross-repo feature | `ppds/` | Need visibility into multiple repos |
+| Extension panel | `extension/` | Extension-specific architecture |
+| Coordinated release | `ppds/` | Cross-project orchestration |
+
+---
+
 ## Testing Philosophy
 
 Different project types need different testing approaches.
@@ -208,21 +240,63 @@ The biggest challenge with AI-assisted development: alignment conversations eat 
 
 ```
 1. Alignment conversation → decisions made
-2. Write EXECUTION-SPEC.md capturing:
-   - What we're building
-   - Key decisions and rationale
-   - Acceptance criteria
+2. Write EXECUTION_SPEC.md capturing decisions
 3. Execute against the spec
 4. Agents can READ the spec for context
 5. Delete spec when done (git history preserves it)
 ```
 
-### When to Use This
+### Execution Spec Template
 
-- Multi-step implementations
-- Work that spans sessions
-- Tasks you'll delegate to agents
-- Anything where you've invested significant alignment time
+Keep it minimal. This is NOT a design document - it's a context checkpoint.
+
+```markdown
+# [Feature Name]
+
+## Context
+[1-2 sentences: Why are we doing this?]
+
+## Decisions
+| Decision | Choice | Why |
+|----------|--------|-----|
+| ... | ... | ... |
+
+## Scope
+- **In**: [What we're building]
+- **Out**: [Explicitly NOT building]
+
+## Acceptance Criteria
+- [ ] ...
+- [ ] ...
+
+## Open Questions
+[Resolve before implementing - or delete section if none]
+```
+
+### Spec Location
+
+| Work Type | Spec Lives In |
+|-----------|---------------|
+| Single-repo feature | That repo's root (e.g., `sdk/EXECUTION_SPEC.md`) |
+| Cross-repo feature | Parent workspace (`ppds/docs/EXECUTION_SPEC.md`) |
+
+### Spec Lifecycle
+
+1. **Create**: After alignment, before implementation
+2. **Use**: Reference during implementation; agents read it for context
+3. **Delete**: After PR merged (git history preserves it)
+
+**Why delete?** Stale specs mislead. The implementation is the real documentation now.
+
+### When to Write a Spec
+
+| Scenario | Write Spec? |
+|----------|-------------|
+| Trivial task (< 30 min) | No |
+| Non-trivial, single session, won't forget | Optional |
+| Non-trivial, might span sessions | Yes |
+| Delegating to agents | Yes |
+| Cross-repo coordination | Yes |
 
 ### When to Skip
 
@@ -234,24 +308,46 @@ The biggest challenge with AI-assisted development: alignment conversations eat 
 
 ## Working With Agents
 
-### When to Use Agents
+### Agent Usage by Phase
 
-- **Exploration**: Finding files, understanding codebase
-- **Parallel work**: Multiple independent tasks
-- **Specialized tasks**: Code review, documentation
+| Phase | Use Agents? | Why |
+|-------|-------------|-----|
+| **Exploration** | ✅ Yes | Gather context efficiently before or during design |
+| **Design/Alignment** | ❌ No | Design is conversation - requires iteration and judgment |
+| **Writing Spec** | ❌ No | You're capturing the conversation you just had |
+| **Implementation** | ✅ Sometimes | Parallel independent work benefits from agents |
+| **Review** | ✅ Yes | Code review agents can help |
+
+### Why Not Agents for Design?
+
+Design is fundamentally a **conversation**. It requires:
+- Back-and-forth iteration
+- Clarifying questions you need to answer
+- Human judgment on trade-offs
+- Building on previous context
+
+Agents can't do this. They execute a task and return - no iteration, no follow-up questions.
+
+### When Agents Excel
+
+- **Exploration**: "Find all authentication handlers across repos"
+- **Parallel implementation**: Independent tasks that don't depend on each other
+- **Cross-repo work**: Multiple agents working in different repos simultaneously
+- **Mechanical tasks**: Renaming, reformatting, applying patterns
 
 ### When to Do It Yourself
 
 - Small sequential edits
 - Work requiring full conversation context
 - Tasks where agent overhead exceeds time saved
+- Design decisions
 
 ### Agent Context Problem
 
 Agents don't have your conversation context. Solve this by:
 
-1. Writing detailed prompts that include necessary context
-2. Having agents read spec files you've written
+1. Writing spec files that agents can read
+2. Including necessary context in the agent prompt
 3. Doing context-heavy work yourself
 
 ### Decision Presentation
@@ -274,6 +370,71 @@ This saves time and produces better decisions.
 
 ---
 
+## Complete Design-to-Implementation Workflow
+
+Putting it all together:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 1. START SESSION                                            │
+│    • Single-repo work → Start in child repo                 │
+│    • Cross-repo work → Start in parent workspace            │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. EXPLORATION (Agents OK)                                  │
+│    • "Find all places we handle X"                          │
+│    • "What patterns does Y use?"                            │
+│    • Gather context before design decisions                 │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. DESIGN CONVERSATION (No Agents)                          │
+│    • Discuss approach with Claude directly                  │
+│    • Iterate on trade-offs                                  │
+│    • Make decisions together                                │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 4. WRITE SPEC (if non-trivial)                              │
+│    • Minimal EXECUTION_SPEC.md                              │
+│    • Single-repo → child repo                               │
+│    • Cross-repo → ppds/docs/                                │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 5. IMPLEMENT (Agents for parallel work)                     │
+│    • Sequential work → Do directly                          │
+│    • Parallel independent tasks → Use agents                │
+│    • Agents read spec for context                           │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 6. CLEANUP                                                  │
+│    • Delete EXECUTION_SPEC.md after PR merged               │
+│    • Git history preserves it                               │
+│    • Add CLAUDE.md rules if AI made repeated mistakes       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Same Session or New Session?
+
+| Scenario | Recommendation |
+|----------|----------------|
+| Design + implement in one sitting | Same session (context preserved) |
+| Long design, need break | Write spec, can resume or start fresh |
+| Delegating implementation to agents | Agents read spec |
+| Context feels exhausted | Write spec, start fresh session |
+
+The spec file is your checkpoint. With a spec, you can always resume.
+
+---
+
 ## Anti-Patterns
 
 ### What Doesn't Work
@@ -285,6 +446,9 @@ This saves time and produces better decisions.
 | **Hoping AI knows your patterns** | It doesn't | Document in NEVER/ALWAYS |
 | **Long alignment, no execution** | Context exhausted | Write spec file, then execute |
 | **Treating AI as autonomous** | You're the architect | Clear direction, review output |
+| **Using agents for design** | Design needs conversation | Do design directly with Claude |
+| **Detailed design docs** | Become stale, waste effort | Minimal spec, delete after merge |
+| **Specs that live forever** | Mislead when outdated | Delete after PR merged |
 
 ### Signs You're Off Track
 
