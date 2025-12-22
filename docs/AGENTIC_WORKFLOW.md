@@ -435,6 +435,100 @@ The spec file is your checkpoint. With a spec, you can always resume.
 
 ---
 
+## Architecture Decision Records (ADRs)
+
+ADRs document **significant, hard-to-reverse decisions**. Unlike execution specs (ephemeral), ADRs are permanent.
+
+### When to Write an ADR
+
+| Scenario | Write ADR? |
+|----------|------------|
+| Choosing between fundamental approaches | Yes |
+| Decision affects multiple components | Yes |
+| Someone will ask "why did we...?" in 6 months | Yes |
+| Trade-offs were carefully considered | Yes |
+| Simple implementation choice | No |
+| Following established patterns | No |
+
+### Where ADRs Live
+
+| ADR Type | Location |
+|----------|----------|
+| Affects one repo | That repo's `docs/adr/` |
+| Affects multiple repos | `ppds/docs/adr/` |
+| About consuming another repo | Consumer's `docs/adr/` |
+
+**ADRs live with the code they affect.** When reading SDK code, SDK ADRs are right there.
+
+### ADR Template
+
+```markdown
+# ADR-NNNN: [Title]
+
+**Status:** Accepted | Superseded | Deprecated
+**Date:** YYYY-MM-DD
+**Applies to:** [Component/Package]
+**Supersedes:** ADR-XXXX (if applicable)
+
+## Context
+
+[What is the problem? Why does a decision need to be made?]
+
+## Decision
+
+[What did we decide? Include code example if applicable.]
+
+## Consequences
+
+### Positive
+- [Benefit 1]
+- [Benefit 2]
+
+### Negative
+- [Tradeoff 1]
+- [Tradeoff 2]
+
+## Alternatives Considered
+
+### [Alternative 1]
+**Rejected because:** [Reason]
+
+### [Alternative 2]
+**Rejected because:** [Reason]
+
+## References
+
+- [Link 1]
+- [Link 2]
+```
+
+### ADR Numbering
+
+Use zero-padded numbers: `0001`, `0002`, etc.
+
+Files: `docs/adr/0001_DESCRIPTIVE_NAME.md`
+
+### ADR Lifecycle
+
+| Status | Meaning |
+|--------|---------|
+| **Accepted** | Current, active decision |
+| **Superseded** | Replaced by newer ADR (link to it) |
+| **Deprecated** | No longer applies, not replaced |
+
+**ADRs are never deleted.** They're historical record. Mark superseded/deprecated instead.
+
+### Execution Spec vs ADR
+
+| Aspect | Execution Spec | ADR |
+|--------|----------------|-----|
+| Purpose | Context for implementation | Document significant decision |
+| Lifespan | Delete after PR merged | Permanent |
+| Detail | Minimal - just enough to execute | Thorough - rationale, alternatives |
+| When | Before implementing features | When making architectural choices |
+
+---
+
 ## Anti-Patterns
 
 ### What Doesn't Work
