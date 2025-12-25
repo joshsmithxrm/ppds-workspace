@@ -116,6 +116,26 @@ extension
 
 ---
 
+## 🔌 Consumption Patterns (SDK/Tools/ALM)
+
+**When to use each layer:**
+
+| Layer | Use When | Example |
+|-------|----------|---------|
+| **Library** (NuGet) | Building C# apps, need programmatic control | `var migrator = new DataverseMigrator(conn);` |
+| **CLI** (dotnet tool) | Running from terminal, learning the API | `ppds-migrate export --connection $CONN` |
+| **Cmdlets** (PPDS.Tools) | PowerShell scripting, ALM workflows | `Invoke-DataverseMigration -Export` |
+| **Workflows** (ppds-alm) | CI/CD automation | `uses: .../data-migrate.yml@v1` |
+
+**Key architectural rules:**
+- Tools wraps CLI (process invocation) - not library directly - for isolation
+- ALM uses Tools (not CLI directly) - for consistency with plugin pattern
+- CLI serves as reference implementation for library usage
+
+See [CONSUMPTION_PATTERNS.md](docs/CONSUMPTION_PATTERNS.md) for full guidance.
+
+---
+
 ## 🚀 Coordinated Release Process
 
 When releasing a new major version across the ecosystem:
@@ -176,6 +196,7 @@ ppds/
 ├── README.md                    # Human-readable overview
 ├── ppds.code-workspace          # VS Code multi-root workspace
 ├── docs/
+│   ├── CONSUMPTION_PATTERNS.md  # When to use library vs CLI vs PowerShell vs ALM
 │   ├── VERSIONING_POLICY.md     # Cross-repo versioning rules
 │   ├── RELEASE_COORDINATION.md  # Coordinated release playbooks
 │   ├── AGENTIC_WORKFLOW.md      # Patterns for AI-assisted development
@@ -196,6 +217,7 @@ ppds/
 
 ## 📚 Documentation References
 
+- [CONSUMPTION_PATTERNS.md](docs/CONSUMPTION_PATTERNS.md) - When to use library vs CLI vs PowerShell vs ALM
 - [VERSIONING_POLICY.md](docs/VERSIONING_POLICY.md) - Cross-repo versioning rules and compatibility
 - [RELEASE_COORDINATION.md](docs/RELEASE_COORDINATION.md) - Coordinated release playbooks
 - [AGENTIC_WORKFLOW.md](docs/AGENTIC_WORKFLOW.md) - Patterns for AI-assisted development
